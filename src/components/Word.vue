@@ -1,9 +1,7 @@
 <template>
   <el-row>
-    <el-col :span="8">
-      {{ formattedDef }}
-    </el-col>
-    <el-col :span="4">
+    <div :style="'width:' + (definitionWidth + 20) + 'px'">{{ formattedDef }}</div>
+    <el-col :span="10">
       {{ word.name }}
     </el-col>
     <el-col :span="2">
@@ -30,7 +28,8 @@ export default {
     }
   },
   props: {
-    word: Object
+    word: Object,
+    definitionWidth: Number
   }
 }
 </script>

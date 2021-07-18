@@ -4,6 +4,7 @@
       :key="word.name"
       :word="word"
       :definition-width="maxDefinitionWidth"
+      :showEditBtn="showEditBtn"
       @toggleDialog="$emit('toggleDialog', word)"
       @deleteWord="$emit('deleteWord', word)" />
 </template>
@@ -21,7 +22,8 @@ export default {
     Word
   },
   props: {
-    words: Array
+    words: Array,
+    showEditBtn: Boolean
   },
   computed: {
     maxDefinitionWidth: function () {

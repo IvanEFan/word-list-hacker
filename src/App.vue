@@ -2,12 +2,16 @@
   <NavBar
       @toggleDialog="showDialog"
       @export="exportWords"
-      @import="importWords"/>
+      @import="importWords"
+      @exportImage="exportImage"/>
   <div style="margin: 20px"></div>
-  <WordList
-      :words="entries"
-      @toggleDialog="showDialog"
-      @deleteWord="deleteWord"/>
+  <div id="wordList">
+    <WordList
+        :words="entries"
+        :showEditBtn="showEditBtn"
+        @toggleDialog="showDialog"
+        @deleteWord="deleteWord"/>
+  </div>
   <el-dialog title="编辑" v-model="isEditFormVisible">
     <el-form :model="form" label-position="right" label-width="100px">
       <el-form-item label="类型">
@@ -60,6 +64,7 @@
 import NavBar from "./components/NavBar";
 import WordList from "./components/WordList";
 import download from "downloadjs"
+import html2canvas from "html2canvas"
 
 export default {
   name: 'App',
@@ -68,6 +73,21 @@ export default {
     WordList
   },
   methods: {
+    exportImage() {
+      this.showEditBtn = false
+      setTimeout(() => {
+        html2canvas(document.getElementById('wordList'), {
+          height: 842,
+          width: 595
+        }).then((canvas) => {
+          canvas.style.height = "1920"
+          canvas.style.width = "1080"
+          let image = canvas.toDataURL('image/png')
+          download(image, 'words.png', 'image/png')
+          this.showEditBtn = true
+        })
+      }, 10)
+    },
     exportWords() {
       download(this.getJson, 'words.json', 'text/plain')
     },
@@ -124,6 +144,7 @@ export default {
   },
   data: function () {
     return {
+      showEditBtn: true,
       isEditFormVisible: false,
       editMode: false,
       form: {

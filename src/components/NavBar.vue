@@ -17,6 +17,9 @@
         <el-button>导入</el-button>
       </el-upload>
     </el-col>
+    <el-col :span="4">
+      <el-button @click="$emit('exportImage')">导出图片</el-button>
+    </el-col>
   </el-row>
 </template>
 
@@ -26,8 +29,14 @@ export default {
   emits: [
     "toggleDialog",
     "export",
-    "import"
+    "import",
+    "exportImage"
   ],
+  data: function () {
+    return {
+      showEditBtn: true
+    }
+  },
   methods: {
     handleUpload(file) {
       let reader = new FileReader()

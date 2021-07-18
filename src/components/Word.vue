@@ -4,7 +4,7 @@
     <el-col :span="10">
       {{ word.name }}
     </el-col>
-    <el-col :span="2">
+    <el-col :span="2" v-if="showEditBtn">
       <el-button type="text" size="mini" @click="$emit('toggleDialog')">编辑</el-button>
       <el-button type="text" size="mini" @click="$emit('deleteWord')">删除</el-button>
     </el-col>
@@ -29,7 +29,8 @@ export default {
   },
   props: {
     word: Object,
-    definitionWidth: Number
+    definitionWidth: Number,
+    showEditBtn: Boolean
   }
 }
 </script>

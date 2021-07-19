@@ -1,5 +1,7 @@
 # word-list-hacker
 
+A tool to simplify the process of word memorization.
+
 ## Project setup
 ```
 npm install

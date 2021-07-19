@@ -36,6 +36,7 @@
               <el-option label="v." value="v."></el-option>
               <el-option label="adv." value="adv."></el-option>
               <el-option label="prep." value="prep."></el-option>
+              <el-option label="无" value=""></el-option>
             </el-select>
           </el-col>
           <el-col :span="8">
@@ -77,11 +78,9 @@ export default {
       this.showEditBtn = false
       setTimeout(() => {
         html2canvas(document.getElementById('wordList'), {
-          height: 842,
-          width: 595
+          height: 1754,
+          width: 1240
         }).then((canvas) => {
-          canvas.style.height = "1920"
-          canvas.style.width = "1080"
           let image = canvas.toDataURL('image/png')
           download(image, 'words.png', 'image/png')
           this.showEditBtn = true
@@ -170,6 +169,26 @@ export default {
             {
               form: "adj.",
               definition: "全面的，综合的"
+            }
+          ]
+        },
+        {
+          type: "phrase",
+          name: "flash by/through",
+          definitions: [
+            {
+              form: "",
+              definition: "飞驰"
+            }
+          ]
+        },
+        {
+          type: "phrase",
+          name: "in a flash",
+          definitions: [
+            {
+              form: "",
+              definition: "转瞬间，刹那间"
             }
           ]
         }

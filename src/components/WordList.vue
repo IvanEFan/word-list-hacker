@@ -1,12 +1,34 @@
 <template>
-  <Word
+  <div
       v-for="word in words"
-      :key="word.name"
-      :word="word"
-      :definition-width="maxDefinitionWidth"
-      :showEditBtn="showEditBtn"
-      @toggleDialog="$emit('toggleDialog', word)"
-      @deleteWord="$emit('deleteWord', word)" />
+      :key="word.name">
+    <Word
+        :word="word"
+        :definition-width="maxDefinitionWidth"
+        :showEditBtn="showEditBtn"
+        v-if="word.type === 'word'"
+        @toggleDialog="$emit('toggleDialog', word)"
+        @deleteWord="$emit('deleteWord', word)"/>
+  </div>
+  <div
+      v-for="word in words"
+      :key="word.name">
+    <Word
+        :word="word"
+        :definition-width="maxDefinitionWidth"
+        :showEditBtn="showEditBtn"
+        v-if="word.type === 'phrase'"
+        @toggleDialog="$emit('toggleDialog', word)"
+        @deleteWord="$emit('deleteWord', word)"/>
+  </div>
+  <!--  <Word-->
+  <!--      v-for="word in words"-->
+  <!--      :key="word.name"-->
+  <!--      :word="word"-->
+  <!--      :definition-width="maxDefinitionWidth"-->
+  <!--      :showEditBtn="showEditBtn"-->
+  <!--      @toggleDialog="$emit('toggleDialog', word)"-->
+  <!--      @deleteWord="$emit('deleteWord', word)"/>-->
 </template>
 
 <script>
@@ -34,7 +56,7 @@ export default {
         })
         return ret.substr(0, ret.length - 1)
       }
-      let pxWidth = function(font, text) {
+      let pxWidth = function (font, text) {
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d");
         font && (context.font = font);

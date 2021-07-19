@@ -1,8 +1,9 @@
 <template>
   <el-row>
-    <div :style="'width:' + (definitionWidth + 20) + 'px'">{{ formattedDef }}</div>
+    <div :style="'width:' + (finalDefinitionWidth + 20) + 'px'">{{ formattedDef }}</div>
     <el-col :span="10">
       {{ word.name }}
+      <el-tag v-if="word.type === 'phrase'" size="mini">词组</el-tag>
     </el-col>
     <el-col :span="2" v-if="showEditBtn">
       <el-button type="text" size="mini" @click="$emit('toggleDialog')">编辑</el-button>
@@ -25,12 +26,20 @@ export default {
         ret += `${item.form} ${item.definition}；`
       })
       return ret.substr(0, ret.length - 1)
+    },
+    finalDefinitionWidth: function () {
+      return this.definitionWidth > this.maxDefinitionWidth ? this.maxDefinitionWidth : this.definitionWidth
     }
   },
   props: {
     word: Object,
     definitionWidth: Number,
     showEditBtn: Boolean
+  },
+  data: function () {
+    return {
+      maxDefinitionWidth: 1000
+    }
   }
 }
 </script>

@@ -1,4 +1,5 @@
 <template>
+  <el-divider></el-divider>
   <div
       v-for="word in words"
       :key="word.name">
@@ -6,6 +7,7 @@
         :word="word"
         :definition-width="maxDefinitionWidth"
         :showEditBtn="showEditBtn"
+        :show-answer="showAnswer"
         v-if="word.type === 'word'"
         @toggleDialog="$emit('toggleDialog', word)"
         @deleteWord="$emit('deleteWord', word)"/>
@@ -17,18 +19,11 @@
         :word="word"
         :definition-width="maxDefinitionWidth"
         :showEditBtn="showEditBtn"
+        :show-answer="showAnswer"
         v-if="word.type === 'phrase'"
         @toggleDialog="$emit('toggleDialog', word)"
         @deleteWord="$emit('deleteWord', word)"/>
   </div>
-  <!--  <Word-->
-  <!--      v-for="word in words"-->
-  <!--      :key="word.name"-->
-  <!--      :word="word"-->
-  <!--      :definition-width="maxDefinitionWidth"-->
-  <!--      :showEditBtn="showEditBtn"-->
-  <!--      @toggleDialog="$emit('toggleDialog', word)"-->
-  <!--      @deleteWord="$emit('deleteWord', word)"/>-->
 </template>
 
 <script>
@@ -45,7 +40,8 @@ export default {
   },
   props: {
     words: Array,
-    showEditBtn: Boolean
+    showEditBtn: Boolean,
+    showAnswer: Boolean
   },
   computed: {
     maxDefinitionWidth: function () {
@@ -76,5 +72,9 @@ export default {
 </script>
 
 <style scoped>
-
+.el-divider--horizontal {
+  margin: 8px 0;
+  background: 0 0;
+  border-top: 1px dashed #e8eaec;
+}
 </style>

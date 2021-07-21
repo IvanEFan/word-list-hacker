@@ -3,12 +3,14 @@
       @toggleDialog="showDialog"
       @export="exportWords"
       @import="importWords"
-      @exportImage="exportImage"/>
+      @exportImage="exportImage"
+      @exportImageNoAnswer="exportImageNoAnswer"/>
   <div style="margin: 20px"></div>
   <div id="wordList">
     <WordList
         :words="entries"
         :showEditBtn="showEditBtn"
+        :show-answer="showAnswer"
         @toggleDialog="showDialog"
         @deleteWord="deleteWord"/>
   </div>
@@ -87,6 +89,21 @@ export default {
         })
       }, 10)
     },
+    exportImageNoAnswer() {
+      this.showAnswer = false
+      this.showEditBtn = false
+      setTimeout(() => {
+        html2canvas(document.getElementById('wordList'), {
+          height: 1754,
+          width: 1240
+        }).then((canvas) => {
+          let image = canvas.toDataURL('image/png')
+          download(image, 'words-no-ans.png', 'image/png')
+          this.showAnswer = true
+          this.showEditBtn = true
+        })
+      }, 10)
+    },
     exportWords() {
       download(this.getJson, 'words.json', 'text/plain')
     },
@@ -144,6 +161,7 @@ export default {
   data: function () {
     return {
       showEditBtn: true,
+      showAnswer: true,
       isEditFormVisible: false,
       editMode: false,
       form: {

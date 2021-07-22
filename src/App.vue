@@ -5,7 +5,7 @@
       @import="importWords"
       @exportImage="exportImage"
       @exportImageNoAnswer="exportImageNoAnswer"
-      @exportExam="exportExamTwoVer"/>
+      @exportExam="exportExamButtonHandler"/>
   <div style="margin: 20px"></div>
   <div id="wordList">
     <WordList
@@ -15,6 +15,10 @@
         @toggleDialog="showDialog"
         @deleteWord="deleteWord"/>
   </div>
+  <el-dialog title="是否下载带答案的试题？" v-model="isAnsExamDialogVisible">
+    <el-button @click="isAnsExamDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="isAnsExamDialogVisible = false; exportExam(true, 'exam-ans.png')">确 定</el-button>
+  </el-dialog>
   <el-dialog title="编辑" v-model="isEditFormVisible">
     <el-form :model="form" label-position="right" label-width="100px">
       <el-form-item label="类型">
@@ -77,15 +81,23 @@ export default {
     WordList
   },
   methods: {
-    exportExamTwoVer() {
+    exportExamButtonHandler() {
+      this.messedWords = []
       let words = [...this.entries]
       words.sort(() => {
         return .5 - Math.random()
       })
-      this.exportExam(true, 'exam-answer.png', words)
+      for (let word of words) {
+        this.messedWords.push({
+          type: word.type,
+          name: word.name,
+          definition: word.definitions[Math.floor((Math.random() * word.definitions.length))].definition
+        })
+      }
       this.exportExam(false, 'exam.png', words)
+      this.isAnsExamDialogVisible = true
     },
-    exportExam(hasAns, filename, words) {
+    exportExam(hasAns, filename) {
       let canvas = document.createElement('canvas')
       let ctx = canvas.getContext('2d')
       canvas.width = 1240;
@@ -113,9 +125,10 @@ export default {
 
       let wordIndex = 0
       let left = true
+      let words = this.messedWords
       for (let i = 0; i < canvas.height && wordIndex < words.length; wordIndex++) {
         let word = words[wordIndex]
-        let definition = word.definitions[Math.floor((Math.random() * word.definitions.length))].definition
+        let definition = word.definition
         definition = word.type === 'phrase' ? '[词组] ' + definition : definition
         ctx.fillText(definition, (left ? 0 : 2 * rectW) + 10, rectH * i + 30);
         if (hasAns) {
@@ -215,6 +228,8 @@ export default {
       showEditBtn: true,
       showAnswer: true,
       isEditFormVisible: false,
+      isAnsExamDialogVisible: false,
+      messedWords: [],
       editMode: false,
       form: {
         type: "word",

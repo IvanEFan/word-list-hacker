@@ -4,7 +4,8 @@
       @export="exportWords"
       @import="importWords"
       @exportImage="exportImage"
-      @exportImageNoAnswer="exportImageNoAnswer"/>
+      @exportImageNoAnswer="exportImageNoAnswer"
+      @exportExam="exportExamTwoVer"/>
   <div style="margin: 20px"></div>
   <div id="wordList">
     <WordList
@@ -76,6 +77,57 @@ export default {
     WordList
   },
   methods: {
+    exportExamTwoVer() {
+      let words = [...this.entries]
+      words.sort(() => {
+        return .5 - Math.random()
+      })
+      this.exportExam(true, 'exam-answer.png', words)
+      this.exportExam(false, 'exam.png', words)
+    },
+    exportExam(hasAns, filename, words) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      canvas.width = 1240;
+      canvas.height = 1754;
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      let rectH = 40;
+      let rectW = 310;
+      ctx.lineWidth = .5;
+      ctx.fillStyle = "#000000";
+      ctx.font = 'normal 16px PingFang SC'
+      // 绘制表格
+      // 第一步： 绘制横线
+      for (let i = 0; i < canvas.width; i++) {
+        ctx.moveTo(rectW * i, 0);
+        //如果不设置moveTo，当前画笔没有位置
+        ctx.lineTo(rectW * i, canvas.height);
+      }
+      // 第二步：绘制竖线：如果绘制的格子的宽高相等，可以将for循环放到一个里面；
+      for (let i = 0; i < canvas.height; i++) {
+        ctx.moveTo(0, rectH * i);
+        ctx.lineTo(canvas.width, rectH * i);
+      }
+      ctx.stroke();
+
+      let wordIndex = 0
+      let left = true
+      for (let i = 0; i < canvas.height && wordIndex < words.length; wordIndex++) {
+        let word = words[wordIndex]
+        let definition = word.definitions[Math.floor((Math.random() * word.definitions.length))].definition
+        definition = word.type === 'phrase' ? '[词组] ' + definition : definition
+        ctx.fillText(definition, (left ? 0 : 2 * rectW) + 10, rectH * i + 30);
+        if (hasAns) {
+          ctx.fillText(word.name, (left ? rectW : 3 * rectW) + 10, rectH * i + 30);
+        }
+        left = !left
+        if (left) i++
+      }
+
+      let image = canvas.toDataURL('image/png')
+      download(image, filename, 'image/png')
+    },
     exportImage() {
       this.showEditBtn = false
       setTimeout(() => {

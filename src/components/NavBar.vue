@@ -13,6 +13,7 @@
         </el-upload>
         <el-button @click="$emit('exportImage')">导出图片</el-button>
         <el-button @click="$emit('exportImageNoAnswer')">导出无答案图片</el-button>
+        <el-button @click="$emit('exportExam')">导出测试</el-button>
     </el-row>
 </template>
 
@@ -24,7 +25,8 @@ export default {
     "export",
     "import",
     "exportImage",
-    "exportImageNoAnswer"
+    "exportImageNoAnswer",
+    "exportExam"
   ],
   data: function () {
     return {
